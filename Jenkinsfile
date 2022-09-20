@@ -20,6 +20,9 @@ pipeline {
        stage('Deploy') {
             steps {
 		        sh 'ls -al'
+                sh 'docker build -t muldos/petclinic:latest .'
+                sh 'docker tag muldos/petclinic:latest drobin.jfrog.io/default-docker-local/petclinic:latest'
+ 
             }
         }
     }
