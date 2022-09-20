@@ -15,7 +15,6 @@ pipeline {
                 dir('petclinic_src') {
                     git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
                     sh 'mvn -B -Duser.home=/var/maven -Dcheckstyle.skip clean package'
-                    sh 'whoami'
                 }
                 sh 'mv petclinic_src/target/spring-petclinic-*.jar ./petclinic.jar'
             }
