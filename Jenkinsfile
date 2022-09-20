@@ -5,7 +5,7 @@ pipeline {
             agent { 
                 docker { 
                         image 'maven:3.8-jdk-11'
-                        args '-v $HOME/.m2:/root/.m2'
+                        args '-e MAVEN_CONFIG=/var/maven/.m2 -v $HOME/.m2:/var/maven/.m2'
                         reuseNode true
                 } 
             }
@@ -14,8 +14,8 @@ pipeline {
                 sh 'rm -rf ./petclinic_src ./petclinic.jar'
                 dir('petclinic_src') {
                     git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
-                    sh 'mvn -B -Dcheckstyle.skip clean package -X'
-                    sh 'ls -al /root/.m2'
+                    sh 'mvn -B -Duser.home=/var/maven -Dcheckstyle.skip clean package'
+                    sh 'whoami'
                 }
                 sh 'mv petclinic_src/target/spring-petclinic-*.jar ./petclinic.jar'
             }
