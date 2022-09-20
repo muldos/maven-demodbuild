@@ -28,7 +28,7 @@ pipeline {
                 rtDockerPush(
                     serverId: 'freeSaasTier',
                     image: params.artifactoryHost + '/' + params.artifactoryDockerRegistry + '/petclinic:corretto11-latest',
-                    targetRepo: 'docker-default-local',
+                    targetRepo: 'default-docker-local',
                     // Attach custom properties to the published artifacts:
                     properties: 'project-name=petclinic;status=stable',
                 )
