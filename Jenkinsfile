@@ -17,16 +17,11 @@ pipeline {
                 sh 'rm -rf ./petclinic_src ./petclinic.jar'
                 dir('petclinic_src') {
                     git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
-                    sh 'mvn -s ../ci-settings.xml -B -Dcheckstyle.skip clean package deploy'
+                    sh 'mvn -s ../ci-settings.xml -B -Dcheckstyle.skip clean package -U'
                 }
                 sh 'mv petclinic_src/target/spring-petclinic-*.jar ./petclinic.jar'
             }
         }
-       stage('Deploy Maven artifact') {
-            steps {
-                sh 'echo "todo"'
-            } 
-       }
        stage('Deploy Docker Image') {
             environment { 
                 ARTIFACTORY_CREDENTIALS=credentials('artifactorySaas')
