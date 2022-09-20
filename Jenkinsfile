@@ -13,6 +13,7 @@ pipeline {
                 dir('petclinic_src') {
                     git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
                     sh 'mvn -B -Dcheckstyle.skip clean package -U'
+                    sh 'ls -al'
                 }
                 sh 'mv petclinic_src/target/spring-petclinic-*.jar ./petclinic.jar'
             }
