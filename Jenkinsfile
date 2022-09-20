@@ -22,7 +22,8 @@ pipeline {
        stage('Deploy Maven artifact') {
             steps {
                 sh 'echo "todo"'
-       } 
+            } 
+       }
        stage('Deploy Docker Image') {
             environment { 
                 ARTIFACTORY_CREDENTIALS=credentials('artifactorySaas')
