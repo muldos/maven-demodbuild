@@ -23,9 +23,19 @@ pipeline {
             }
             steps {
                 sh "echo $ARTIFACTORY_CREDENTIALS_PSW | docker login ${params.artifactoryHost} -u $ARTIFACTORY_CREDENTIALS_USR --password-stdin"
-                sh "docker build -t ${params.artifactoryHost}/default-docker-virtual/petclinic:corretto11-latest ."
-                sh "docker push ${params.artifactoryHost}/default-docker-virtual/petclinic:corretto11-latest"
+                sh "docker build -t ${params.artifactoryHost}/${params.artifactoryDockerRegistry}/petclinic:corretto11-latest ."
+                //sh "docker push ${params.artifactoryHost}/${params.artifactoryDockerRegistry}/petclinic:corretto11-latest"
+                rtDockerPush(
+                    serverId: 'freeSaasTier',
+                    image: params.artifactoryHost + '/' + params.artifactoryDockerRegistry + '/petclinic:corretto11-latest',
+                    targetRepo: 'docker-default-local',
+                    // Attach custom properties to the published artifacts:
+                    properties: 'project-name=petclinic;status=stable',
+                )
 
+                rtPublishBuildInfo (
+                    serverId: 'freeSaasTier'
+                )
             }
         }
     }
