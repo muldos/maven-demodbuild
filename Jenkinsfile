@@ -24,7 +24,7 @@ pipeline {
             steps {
                 sh 'echo $ARTIFACTORY_CREDENTIALS_PSW | docker login drobin.jfrog.io -u $ARTIFACTORY_CREDENTIALS_USR --password-stdin'
                 sh 'docker build -t petclinic:latest .'
-                sh 'docker tag petclinic:latest drobin.jfrog.io/default-docker-virtual/petclinic:latest'
+                sh 'docker tag petclinic:latest drobin.jfrog.io/default-docker-virtual/petclinic:corretto11-latest'
                 sh 'docker push drobin.jfrog.io/default-docker-virtual/petclinic:corretto11-latest'
  
             }
