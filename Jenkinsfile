@@ -4,6 +4,7 @@ pipeline {
         stage('Build') {
             agent { docker { 
                         image 'maven:3.8-jdk-11'
+                        args '-v $HOME/.m2:/root/.m2'
                         reuseNode true
                     } 
             }
@@ -21,10 +22,9 @@ pipeline {
        stage('Deploy') {
             environment { 
                 ARTIFACTORY_CREDENTIALS=credentials('artifactorySaas')
-                ARTIFACTORY_HOST=params.artifactoryHost
             }
             steps {
-                sh 'echo $ARTIFACTORY_CREDENTIALS_PSW | docker login $ARTIFACTORY_HOST -u $ARTIFACTORY_CREDENTIALS_USR --password-stdin'
+                sh 'echo $ARTIFACTORY_CREDENTIALS_PSW | docker login $artifactoryHost -u $ARTIFACTORY_CREDENTIALS_USR --password-stdin'
                 sh "docker build -t ${params.artifactoryHost}/${params.artifactoryDockerRegistry}/petclinic:corretto11-latest ."
                 //sh "docker push ${params.artifactoryHost}/${params.artifactoryDockerRegistry}/petclinic:corretto11-latest"
                 rtDockerPush(
