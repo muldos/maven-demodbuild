@@ -17,7 +17,8 @@ pipeline {
                 sh 'rm -rf ./petclinic_src ./petclinic.jar'
                 dir('petclinic_src') {
                     git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
-                    sh 'mvn -s ../ci-settings.xml -B -Dcheckstyle.skip clean package -U'
+                    sh 'mvn -s ../ci-settings.xml -B -Dcheckstyle.skip clean package'
+                    sh 'mvn -s ../ci-settings.xml -B -Dcheckstyle.skip deploy'
                 }
                 sh 'mv petclinic_src/target/spring-petclinic-*.jar ./petclinic.jar'
             }
