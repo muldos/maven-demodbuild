@@ -10,11 +10,22 @@
     <server>
       <username>${env.ARTIFACTORY_CREDENTIALS_USR}</username>
       <password>${env.ARTIFACTORY_CREDENTIALS_PSW}</password>
+      <id>central-local</id>
+    </server>
+    <server>
+      <username>${env.ARTIFACTORY_CREDENTIALS_USR}</username>
+      <password>${env.ARTIFACTORY_CREDENTIALS_PSW}</password>
       <id>snapshots</id>
+    </server>
+    <server>
+      <username>${env.ARTIFACTORY_CREDENTIALS_USR}</username>
+      <password>${env.ARTIFACTORY_CREDENTIALS_PSW}</password>
+      <id>snapshots-local</id>
     </server>
   </servers>
   <profiles>
     <profile>
+      <id>artifactory</id>
       <repositories>
         <repository>
           <snapshots>
@@ -47,19 +58,10 @@
           <url>${env.ARTIFACTORY_MAVEN_VIRTUAL}</url>
         </pluginRepository>
       </pluginRepositories>
-      <distributionManagement>
-        <repository>
-            <id>central</id>
-            <name>artifactory-primary-0-releases</name>
-            <url>${env.ARTIFACTORY_MAVEN_LOCAL}</url>
-        </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>artifactory-primary-0-snapshots</name>
-            <url>${env.ARTIFACTORY_MAVEN_LOCAL}</url>
-        </snapshotRepository>
-      </distributionManagement>
-      <id>artifactory</id>
+      <properties>
+          <altSnapshotDeploymentRepository>snapshots-local::${env.ARTIFACTORY_MAVEN_LOCAL}</altSnapshotDeploymentRepository>
+          <altReleaseDeploymentRepository>central-local::${env.ARTIFACTORY_MAVEN_LOCAL}</altReleaseDeploymentRepository>
+      </properties>
     </profile>
   </profiles>
   <activeProfiles>
