@@ -52,7 +52,6 @@ pipeline {
                     // Attach custom properties to the published artifacts:
                     properties: 'project-name=petclinic;status=stable',
                 )
-
                 rtPublishBuildInfo (
                     serverId: 'freeSaasTier'
                 )
