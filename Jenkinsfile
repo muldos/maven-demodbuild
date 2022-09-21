@@ -39,6 +39,9 @@ pipeline {
                 /**
                 * Docker push using dedicated functions from the Jenkin's Artifactory plugin.
                 */
+                rtBuildInfo(
+                    captureEnv: true
+                )
                 rtDockerPush(
                     serverId: 'freeSaasTier',
                     image: params.artifactoryHost + '/' + params.artifactoryDockerRegistry + '/petclinic:' + env.BUILD_NUMBER,
