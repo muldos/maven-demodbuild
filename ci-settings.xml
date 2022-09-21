@@ -47,6 +47,18 @@
           <url>${env.ARTIFACTORY_MAVEN_VIRTUAL}</url>
         </pluginRepository>
       </pluginRepositories>
+      <distributionManagement>
+        <repository>
+            <id>central</id>
+            <name>artifactory-primary-0-releases</name>
+            <url>${env.ARTIFACTORY_MAVEN_LOCAL}</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>artifactory-primary-0-snapshots</name>
+            <url>${env.ARTIFACTORY_MAVEN_LOCAL}</url>
+        </snapshotRepository>
+      </distributionManagement>
       <id>artifactory</id>
     </profile>
   </profiles>
