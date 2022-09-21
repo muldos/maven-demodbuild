@@ -28,15 +28,23 @@ pipeline {
             }
             steps {
                 sh 'echo $ARTIFACTORY_CREDENTIALS_PSW | docker login $artifactoryHost -u $ARTIFACTORY_CREDENTIALS_USR --password-stdin'
-                
+                sh 'docker build -t $artifactoryHost/$artifactoryDockerRegistry/petclinic:$BUILD_NUMBER .'
+                sh 'docker tag $artifactoryHost/$artifactoryDockerRegistry/petclinic:$BUILD_NUMBER  $artifactoryHost/$artifactoryDockerRegistry/petclinic:corretto11-latest'
+
                 /**
                 * Plain old shell docker push
                 */
-                //sh "docker build -t ${params.artifactoryHost}/${params.artifactoryDockerRegistry}/petclinic:corretto11-latest ."
                 //sh "docker push ${params.artifactoryHost}/${params.artifactoryDockerRegistry}/petclinic:corretto11-latest"
                 /**
                 * Docker push using dedicated functions from the Jenkin's Artifactory plugin.
                 */
+                rtDockerPush(
+                    serverId: 'freeSaasTier',
+                    image: params.artifactoryHost + '/' + params.artifactoryDockerRegistry + '/petclinic:' + env.BUILD_NUMBER,
+                    targetRepo: 'default-docker-local',
+                    // Attach custom properties to the published artifacts:
+                    properties: 'project-name=petclinic;status=stable',
+                )
                 rtDockerPush(
                     serverId: 'freeSaasTier',
                     image: params.artifactoryHost + '/' + params.artifactoryDockerRegistry + '/petclinic:corretto11-latest',
