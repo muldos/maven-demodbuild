@@ -59,8 +59,8 @@
         </pluginRepository>
       </pluginRepositories>
       <properties>
-          <altSnapshotDeploymentRepository>snapshots-local::${env.ARTIFACTORY_MAVEN_LOCAL}</altSnapshotDeploymentRepository>
-          <altReleaseDeploymentRepository>central-local::${env.ARTIFACTORY_MAVEN_LOCAL}</altReleaseDeploymentRepository>
+          <altSnapshotDeploymentRepository>snapshots-local::remote::${env.ARTIFACTORY_MAVEN_LOCAL}</altSnapshotDeploymentRepository>
+          <altReleaseDeploymentRepository>central-local::remote::${env.ARTIFACTORY_MAVEN_LOCAL}</altReleaseDeploymentRepository>
       </properties>
     </profile>
   </profiles>
