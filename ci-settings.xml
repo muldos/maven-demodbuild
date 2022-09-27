@@ -33,13 +33,13 @@
           </snapshots>
           <id>central</id>
           <name>default-maven-virtual</name>
-          <url>${env.ARTIFACTORY_MAVEN_VIRTUAL}</url>
+          <url>${env.ARTIFACTORY_MAVEN_VIRTUAL_RELEASE}</url>
         </repository>
         <repository>
           <snapshots />
           <id>snapshots</id>
           <name>default-maven-virtual</name>
-          <url>${env.ARTIFACTORY_MAVEN_VIRTUAL}</url>
+          <url>${env.ARTIFACTORY_MAVEN_VIRTUAL_SNAPSHOT}</url>
         </repository>
       </repositories>
       <pluginRepositories>
@@ -49,18 +49,18 @@
           </snapshots>
           <id>central</id>
           <name>default-maven-virtual</name>
-          <url>${env.ARTIFACTORY_MAVEN_VIRTUAL}</url>
+          <url>${env.ARTIFACTORY_MAVEN_VIRTUAL_RELEASE}</url>
         </pluginRepository>
         <pluginRepository>
           <snapshots />
           <id>snapshots</id>
           <name>default-maven-virtual</name>
-          <url>${env.ARTIFACTORY_MAVEN_VIRTUAL}</url>
+          <url>${env.ARTIFACTORY_MAVEN_VIRTUAL_SNAPSHOT}</url>
         </pluginRepository>
       </pluginRepositories>
       <properties>
-          <altSnapshotDeploymentRepository>snapshots-local::default::${env.ARTIFACTORY_MAVEN_LOCAL}</altSnapshotDeploymentRepository>
-          <altReleaseDeploymentRepository>central-local::default::${env.ARTIFACTORY_MAVEN_LOCAL}</altReleaseDeploymentRepository>
+          <altSnapshotDeploymentRepository>snapshots-local::default::${env.ARTIFACTORY_MAVEN_LOCAL_SNAPSHOT}</altSnapshotDeploymentRepository>
+          <altReleaseDeploymentRepository>central-local::default::${env.ARTIFACTORY_MAVEN_LOCAL_RELEASE}</altReleaseDeploymentRepository>
       </properties>
     </profile>
   </profiles>
