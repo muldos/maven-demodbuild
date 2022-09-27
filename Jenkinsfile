@@ -31,7 +31,7 @@ pipeline {
                 sh 'mv petclinic_src/target/spring-petclinic-*.jar ./petclinic.jar'
             }
         }
-       stage('Deploy Docker Image') {
+       stage('Docker Image Scan & Deploy') {
             environment { 
                 ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
             }
@@ -76,4 +76,19 @@ pipeline {
             }
         }
     }
+           stage('Docker Image Promote') {
+            environment { 
+                ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
+            }
+            steps {
+                sh 'docker tag $artifactoryHost/$artifactoryDockerRegistry/petclinic:$BUILD_NUMBER  $artifactoryHost/$artifactoryDockerStagingRegistry/petclinic:$BUILD_NUMBER'
+                rtDockerPush(
+                    serverId: 'selfHosted',
+                    image: params.artifactoryHost + '/' + params.artifactoryDockerStagingRegistry + '/petclinic:' + env.BUILD_NUMBER,
+                    targetRepo: params.artifactoryDockerStagingRegistry,
+                    // Attach custom properties to the published artifacts:
+                    properties: 'project-name=petclinic;status=stable',
+                )
+            }
+           }
 }
