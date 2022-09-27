@@ -57,12 +57,6 @@ pipeline {
                     // Attach custom properties to the published artifacts:
                     properties: 'project-name=petclinic;status=stable',
                 )
-                xrayScan (
-                    serverId: 'selfHosted',
-                 
-                    // If the build is found vulnerable, the job will fail by default. If you do not wish it to fail:
-                    failBuild: false
-                )
                 rtDockerPush(
                     serverId: 'selfHosted',
                     image: params.artifactoryHost + '/' + params.artifactoryDockerRegistry + '/petclinic:corretto11-latest',
@@ -72,6 +66,12 @@ pipeline {
                 )
                 rtPublishBuildInfo (
                     serverId: 'selfHosted'
+                )
+                xrayScan (
+                    serverId: 'selfHosted',
+                 
+                    // If the build is found vulnerable, the job will fail by default. If you do not wish it to fail:
+                    failBuild: false
                 )
             }
         }
