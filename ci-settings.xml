@@ -10,12 +10,22 @@
     <server>
       <username>${env.ARTIFACTORY_CREDENTIALS_USR}</username>
       <password>${env.ARTIFACTORY_CREDENTIALS_PSW}</password>
+      <id>central-mirror</id>
+    </server>
+    <server>
+      <username>${env.ARTIFACTORY_CREDENTIALS_USR}</username>
+      <password>${env.ARTIFACTORY_CREDENTIALS_PSW}</password>
       <id>central-local</id>
     </server>
     <server>
       <username>${env.ARTIFACTORY_CREDENTIALS_USR}</username>
       <password>${env.ARTIFACTORY_CREDENTIALS_PSW}</password>
       <id>snapshots</id>
+    </server>
+    <server>
+      <username>${env.ARTIFACTORY_CREDENTIALS_USR}</username>
+      <password>${env.ARTIFACTORY_CREDENTIALS_PSW}</password>
+      <id>snapshots-mirror</id>
     </server>
     <server>
       <username>${env.ARTIFACTORY_CREDENTIALS_USR}</username>
