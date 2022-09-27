@@ -69,9 +69,7 @@ pipeline {
                 )
                 xrayScan (
                     serverId: 'selfHosted',
-                 
-                    // If the build is found vulnerable, the job will fail by default. If you do not wish it to fail:
-                    failBuild: false
+                    failBuild: true
                 )
             }
         }
