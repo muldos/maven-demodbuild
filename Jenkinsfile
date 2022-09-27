@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage ('Init') {
+        stage ('Init tasks') {
              environment { 
                 ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
             }
@@ -9,7 +9,7 @@ pipeline {
                  sh 'echo $ARTIFACTORY_CREDENTIALS_PSW | docker login $artifactoryHost -u $ARTIFACTORY_CREDENTIALS_USR --password-stdin'
             }
         }
-        stage('Build & Unit tests') {
+        stage('Maven Build & Unit tests') {
             environment { 
                 ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
             }
