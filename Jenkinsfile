@@ -75,8 +75,7 @@ pipeline {
                 )
             }
         }
-    }
-           stage('Docker Image Promote') {
+        stage('Docker Image Promote') {
             environment { 
                 ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
             }
@@ -90,5 +89,8 @@ pipeline {
                     properties: 'project-name=petclinic;status=stable',
                 )
             }
-           }
+        }    
+    
+    
+    }
 }
