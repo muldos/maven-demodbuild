@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Build & Unit tests') {
             environment { 
-                ARTIFACTORY_CREDENTIALS=credentials('artifactorySaas')
+                ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
             }
             agent { 
                 docker { 
@@ -25,7 +25,7 @@ pipeline {
         }
        stage('Deploy Docker Image') {
             environment { 
-                ARTIFACTORY_CREDENTIALS=credentials('artifactorySaas')
+                ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
             }
             steps {
                 sh 'echo $ARTIFACTORY_CREDENTIALS_PSW | docker login $artifactoryHost -u $ARTIFACTORY_CREDENTIALS_USR --password-stdin'
@@ -43,21 +43,21 @@ pipeline {
                     captureEnv: true
                 )
                 rtDockerPush(
-                    serverId: 'freeSaasTier',
+                    serverId: 'selfHosted',
                     image: params.artifactoryHost + '/' + params.artifactoryDockerRegistry + '/petclinic:' + env.BUILD_NUMBER,
-                    targetRepo: 'default-docker-local',
+                    targetRepo: 'dev-docker-virtual',
                     // Attach custom properties to the published artifacts:
                     properties: 'project-name=petclinic;status=stable',
                 )
                 rtDockerPush(
-                    serverId: 'freeSaasTier',
+                    serverId: 'selfHosted',
                     image: params.artifactoryHost + '/' + params.artifactoryDockerRegistry + '/petclinic:corretto11-latest',
-                    targetRepo: 'default-docker-local',
+                    targetRepo: 'dev-docker-virtual',
                     // Attach custom properties to the published artifacts:
                     properties: 'project-name=petclinic;status=stable',
                 )
                 rtPublishBuildInfo (
-                    serverId: 'freeSaasTier'
+                    serverId: 'selfHosted'
                 )
             }
         }
