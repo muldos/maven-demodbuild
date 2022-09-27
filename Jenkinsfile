@@ -7,7 +7,7 @@ pipeline {
             }
             agent { 
                 docker { 
-                        image '$artifactoryHost/$artifactoryDockerRegistry/maven:3.8-jdk-11'
+                        image params.artifactoryHost + '/' + params.artifactoryDockerRegistry + '/maven:3.8-jdk-11'
                         args '-u root --privileged -v $HOME/.m2:/root/.m2'
                         reuseNode true
                 } 
