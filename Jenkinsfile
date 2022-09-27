@@ -53,14 +53,14 @@ pipeline {
                 rtDockerPush(
                     serverId: 'selfHosted',
                     image: params.artifactoryHost + '/' + params.artifactoryDockerRegistry + '/petclinic:' + env.BUILD_NUMBER,
-                    targetRepo: 'dev-docker-virtual',
+                    targetRepo: params.artifactoryDockerRegistry,
                     // Attach custom properties to the published artifacts:
                     properties: 'project-name=petclinic;status=stable',
                 )
                 rtDockerPush(
                     serverId: 'selfHosted',
                     image: params.artifactoryHost + '/' + params.artifactoryDockerRegistry + '/petclinic:corretto11-latest',
-                    targetRepo: 'dev-docker-virtual',
+                    targetRepo: params.artifactoryDockerRegistry,
                     // Attach custom properties to the published artifacts:
                     properties: 'project-name=petclinic;status=stable',
                 )
