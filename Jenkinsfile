@@ -1,6 +1,14 @@
 pipeline {
     agent any
     stages {
+        stage ('Init') {
+             environment { 
+                ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
+            }
+            steps {
+                 sh 'echo $ARTIFACTORY_CREDENTIALS_PSW | docker login $artifactoryHost -u $ARTIFACTORY_CREDENTIALS_USR --password-stdin'
+            }
+        }
         stage('Build & Unit tests') {
             environment { 
                 ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
@@ -28,7 +36,7 @@ pipeline {
                 ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
             }
             steps {
-                sh 'echo $ARTIFACTORY_CREDENTIALS_PSW | docker login $artifactoryHost -u $ARTIFACTORY_CREDENTIALS_USR --password-stdin'
+                //sh 'echo $ARTIFACTORY_CREDENTIALS_PSW | docker login $artifactoryHost -u $ARTIFACTORY_CREDENTIALS_USR --password-stdin'
                 sh 'docker build -t $artifactoryHost/$artifactoryDockerRegistry/petclinic:$BUILD_NUMBER .'
                 sh 'docker tag $artifactoryHost/$artifactoryDockerRegistry/petclinic:$BUILD_NUMBER  $artifactoryHost/$artifactoryDockerRegistry/petclinic:corretto11-latest'
 

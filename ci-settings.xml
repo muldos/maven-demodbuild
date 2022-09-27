@@ -23,6 +23,23 @@
       <id>snapshots-local</id>
     </server>
   </servers>
+  <!-- Add this mirror block to allow http for custom repos -->
+  <mirrors>
+    <mirror>
+        <id>central-mirror</id>
+        <mirrorOf>central</mirrorOf> <!-- Must match repository id. -->
+        <name>Dummy mirror to unblock the team repo central server</name>
+        <url>${env.ARTIFACTORY_MAVEN_VIRTUAL_RELEASE}</url>
+       <!-- <blocked>false</blocked> --> <!-- This is not needed, the mirror is unblocked by default. -->
+    </mirror>
+    <mirror>
+      <id>snapshots-mirror</id>
+      <mirrorOf>snapshots</mirrorOf> <!-- Must match repository id. -->
+      <name>Dummy mirror to unblock the team repo snapshots server</name>
+      <url>${env.ARTIFACTORY_MAVEN_VIRTUAL_SNAPSHOT}</url>
+     <!-- <blocked>false</blocked> --> <!-- This is not needed, the mirror is unblocked by default. -->
+  </mirror>
+  </mirrors>
   <profiles>
     <profile>
       <id>artifactory</id>
@@ -32,13 +49,13 @@
             <enabled>false</enabled>
           </snapshots>
           <id>central</id>
-          <name>default-maven-virtual</name>
+          <name>Artifactory maven virtual repo for releases</name>
           <url>${env.ARTIFACTORY_MAVEN_VIRTUAL_RELEASE}</url>
         </repository>
         <repository>
           <snapshots />
           <id>snapshots</id>
-          <name>default-maven-virtual</name>
+          <name>Artifactory maven virtual repo for snapshots</name>
           <url>${env.ARTIFACTORY_MAVEN_VIRTUAL_SNAPSHOT}</url>
         </repository>
       </repositories>
@@ -48,13 +65,13 @@
             <enabled>false</enabled>
           </snapshots>
           <id>central</id>
-          <name>default-maven-virtual</name>
+          <name>Artifactory maven virtaul repo for releases</name>
           <url>${env.ARTIFACTORY_MAVEN_VIRTUAL_RELEASE}</url>
         </pluginRepository>
         <pluginRepository>
           <snapshots />
           <id>snapshots</id>
-          <name>default-maven-virtual</name>
+          <name>Artifactory maven virtual repo for snapshots</name>
           <url>${env.ARTIFACTORY_MAVEN_VIRTUAL_SNAPSHOT}</url>
         </pluginRepository>
       </pluginRepositories>
