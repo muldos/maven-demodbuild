@@ -94,7 +94,7 @@ pipeline {
                 rtPromote (
                     // Mandatory parameter
 
-                    buildName: env.BUILD_NUMBER,
+                    buildName: env.JOB_BASE_NAME,
                     buildNumber: env.BUILD_NUMBER,
                     serverId: 'selfHosted',
                     // Name of target repository in Artifactory
