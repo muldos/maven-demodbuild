@@ -1,0 +1,3 @@
+ARG BASE_IMAGE=maven:3-jdk-11
+FROM $BASE_IMAGE
+RUN curl -fL https://install-cli.jfrog.io | sh

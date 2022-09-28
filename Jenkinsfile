@@ -14,11 +14,20 @@ pipeline {
                 ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
             }
             agent { 
+                
+                dockerfile {
+                    filename 'MavenDockerfile'
+                    label 'maven-frog-agent'
+                    additionalBuildArgs  '--build-arg BASE_IMAGE=$artifactoryHost/$artifactoryDockerRegistry/maven:3.8-jdk-11'
+                    args '-u root --privileged -v $HOME/.m2:/root/.m2'
+                    reuseNode true
+                }
+                /*
                 docker { 
                         image params.artifactoryHost + '/' + params.artifactoryDockerRegistry + '/maven:3.8-jdk-11'
                         args '-u root --privileged -v $HOME/.m2:/root/.m2'
                         reuseNode true
-                } 
+                } */
             }
             steps {
                 //let's start with a fresh state
@@ -27,6 +36,7 @@ pipeline {
                     git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
                     sh 'mvn -s ../ci-settings.xml -B -Dcheckstyle.skip clean package'
                     sh 'mvn -s ../ci-settings.xml -B -Dcheckstyle.skip deploy'
+                    sh 'jf c add --user $ARTIFACTORY_CREDENTIALS_USR --password $ARTIFACTORY_CREDENTIALS_PSW --url http://$artifactoryHost/artifactory --insecure-tls true--interactive false'
                 }
                 sh 'mv petclinic_src/target/spring-petclinic-*.jar ./petclinic.jar'
             }
@@ -69,7 +79,7 @@ pipeline {
                 )
                 xrayScan (
                     serverId: 'selfHosted',
-                    failBuild: true
+                    failBuild: params.xrayFail
                 )
             }
         }
