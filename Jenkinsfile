@@ -9,7 +9,7 @@ pipeline {
                  sh 'echo $ARTIFACTORY_CREDENTIALS_PSW | docker login $artifactoryHost -u $ARTIFACTORY_CREDENTIALS_USR --password-stdin'
             }
         }
-        stage('Maven Build & Unit tests') {
+        stage('Maven Build, Audit & Unit tests') {
             environment { 
                 ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
             }
@@ -90,6 +90,23 @@ pipeline {
                 ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
             }
             steps {
+
+                rtPromote (
+                    // Mandatory parameter
+
+                    buildName: env.BUILD_NUMBER,
+                    buildNumber: env.BUILD_NUMBER,
+                    serverId: 'selfHosted',
+                    // Name of target repository in Artifactory
+                    targetRepo: params.artifactoryDockerStagingRegistry,
+                    // Comment and Status to be displayed in the Build History tab in Artifactory
+                    comment: 'promoted following a successfull Xray scan',
+                    status: 'Staging',
+                    copy: true
+                )
+
+
+                /*
                 sh 'docker tag $artifactoryHost/$artifactoryDockerRegistry/petclinic:$BUILD_NUMBER  $artifactoryHost/$artifactoryDockerStagingRegistry/petclinic:$BUILD_NUMBER'
                 rtDockerPush(
                     serverId: 'selfHosted',
@@ -97,7 +114,7 @@ pipeline {
                     targetRepo: params.artifactoryDockerStagingRegistry,
                     // Attach custom properties to the published artifacts:
                     properties: 'project-name=petclinic;status=stable',
-                )
+                )*/
             }
         }    
     
