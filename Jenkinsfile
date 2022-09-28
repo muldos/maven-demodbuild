@@ -36,9 +36,11 @@ pipeline {
                     git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
                     sh 'mvn -s ../ci-settings.xml -B -Dcheckstyle.skip clean package'
                     sh 'mvn -s ../ci-settings.xml -B -Dcheckstyle.skip deploy'
-                    sh 'jf c add --user $ARTIFACTORY_CREDENTIALS_USR --password $ARTIFACTORY_CREDENTIALS_PSW --url http://$artifactoryHost/artifactory --insecure-tls true--interactive false'
+                    sh 'jf c add --user $ARTIFACTORY_CREDENTIALS_USR --password $ARTIFACTORY_CREDENTIALS_PSW --url $artifactoryHostScheme://$artifactoryHost --insecure-tls true--interactive false'
+                    sh 'jf audit --mvn'
                 }
                 sh 'mv petclinic_src/target/spring-petclinic-*.jar ./petclinic.jar'
+                sh 'jf scan petclinic.jar'
             }
         }
        stage('Docker Image Scan & Deploy') {
