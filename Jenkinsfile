@@ -80,9 +80,7 @@ pipeline {
             }
             steps {
                 rtPromote (
-                    // Mandatory parameter
-                    buildName: env.JOB_BASE_NAME,
-                    buildNumber: env.BUILD_NUMBER,
+
                     serverId: 'selfHosted',
                     // Name of target repository in Artifactory
                     targetRepo: params.artifactoryDockerStagingRegistry,
