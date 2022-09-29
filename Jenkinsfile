@@ -42,7 +42,7 @@ pipeline {
                 ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
             }
             steps {
-                sh 'docker build --build-arg JAR_NAME=petclinic-$BUILD_NUMBER.jar -t $artifactoryHost/$artifactoryDockerRegistry/petclinic:$BUILD_NUMBER .'
+                sh 'mv ./petclinic-$BUILD_NUMBER.jar ./petclinic.jar && docker build -t $artifactoryHost/$artifactoryDockerRegistry/petclinic:$BUILD_NUMBER .'
                 sh 'docker tag $artifactoryHost/$artifactoryDockerRegistry/petclinic:$BUILD_NUMBER  $artifactoryHost/$artifactoryDockerRegistry/petclinic:corretto11-latest'
 
                 /**
@@ -79,7 +79,6 @@ pipeline {
                 ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
             }
             steps {
-
                 rtPromote (
                     // Mandatory parameter
                     buildName: env.JOB_BASE_NAME,
