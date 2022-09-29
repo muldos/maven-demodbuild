@@ -22,12 +22,6 @@ pipeline {
                     args '-u root --privileged -v $HOME/.m2:/root/.m2'
                     reuseNode true
                 }
-                /*
-                docker { 
-                        image params.artifactoryHost + '/' + params.artifactoryDockerRegistry + '/maven:3.8-jdk-11'
-                        args '-u root --privileged -v $HOME/.m2:/root/.m2'
-                        reuseNode true
-                } */
             }
             steps {
                 //let's start with a fresh state
@@ -39,8 +33,8 @@ pipeline {
                     sh 'jf c add --user $ARTIFACTORY_CREDENTIALS_USR --password $ARTIFACTORY_CREDENTIALS_PSW --url $artifactoryHostScheme://$artifactoryHost --insecure-tls true--interactive false'
                     sh 'jf audit --mvn'
                 }
-                sh 'mv petclinic_src/target/spring-petclinic-*.jar ./petclinic.jar'
-                sh 'jf scan petclinic.jar'
+                sh 'mv petclinic_src/target/spring-petclinic-*.jar ./petclinic-$BUILD_NUMBER.jar'
+                sh 'jf scan petclinic-$BUILD_NUMBER.jar'
             }
         }
        stage('Docker Image Scan & Deploy') {
@@ -48,14 +42,9 @@ pipeline {
                 ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
             }
             steps {
-                //sh 'echo $ARTIFACTORY_CREDENTIALS_PSW | docker login $artifactoryHost -u $ARTIFACTORY_CREDENTIALS_USR --password-stdin'
-                sh 'docker build -t $artifactoryHost/$artifactoryDockerRegistry/petclinic:$BUILD_NUMBER .'
+                sh 'docker build --build-arg JAR_NAME=petclinic-$BUILD_NUMBER.jar -t $artifactoryHost/$artifactoryDockerRegistry/petclinic:$BUILD_NUMBER .'
                 sh 'docker tag $artifactoryHost/$artifactoryDockerRegistry/petclinic:$BUILD_NUMBER  $artifactoryHost/$artifactoryDockerRegistry/petclinic:corretto11-latest'
 
-                /**
-                * Plain old shell docker push
-                */
-                //sh "docker push ${params.artifactoryHost}/${params.artifactoryDockerRegistry}/petclinic:corretto11-latest"
                 /**
                 * Docker push using dedicated functions from the Jenkin's Artifactory plugin.
                 */
@@ -93,7 +82,6 @@ pipeline {
 
                 rtPromote (
                     // Mandatory parameter
-
                     buildName: env.JOB_BASE_NAME,
                     buildNumber: env.BUILD_NUMBER,
                     serverId: 'selfHosted',
@@ -104,17 +92,6 @@ pipeline {
                     status: 'Staging',
                     copy: true
                 )
-
-
-                /*
-                sh 'docker tag $artifactoryHost/$artifactoryDockerRegistry/petclinic:$BUILD_NUMBER  $artifactoryHost/$artifactoryDockerStagingRegistry/petclinic:$BUILD_NUMBER'
-                rtDockerPush(
-                    serverId: 'selfHosted',
-                    image: params.artifactoryHost + '/' + params.artifactoryDockerStagingRegistry + '/petclinic:' + env.BUILD_NUMBER,
-                    targetRepo: params.artifactoryDockerStagingRegistry,
-                    // Attach custom properties to the published artifacts:
-                    properties: 'project-name=petclinic;status=stable',
-                )*/
             }
         }    
     
