@@ -90,7 +90,7 @@ pipeline {
                     copy: true
                 )
                 // demonstrate how the jf cli can also be used to get build scan
-                sh 'jf c add  --server-id=$jfrogServerId --user $ARTIFACTORY_CREDENTIALS_USR --password $ARTIFACTORY_CREDENTIALS_PSW --url $artifactoryHostScheme://$artifactoryHost --insecure-tls=true --interactive=false'
+                sh 'jf c add $jfrogServerId --user $ARTIFACTORY_CREDENTIALS_USR --password $ARTIFACTORY_CREDENTIALS_PSW --url $artifactoryHostScheme://$artifactoryHost --insecure-tls=true --interactive=false'
                 sh 'jf bs --server-id=$jfrogServerId --fail=$xrayFail $JOB_BASE_NAME $BUILD_NUMBER'
             }
         }    
