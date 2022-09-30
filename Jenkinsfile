@@ -94,7 +94,7 @@ pipeline {
                     copy: true
                 )
                 rtPublishBuildInfo (
-                    buildName: env.JOB_BASE_NAME + '-staging'
+                    buildName: env.JOB_BASE_NAME + '-staging',
                     serverId: params.jfrogServerId
                 )
                 // demonstrate how the jf cli can also be used to get build scan
