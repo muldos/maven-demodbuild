@@ -69,7 +69,7 @@ pipeline {
                     serverId: params.jfrogServerId
                 )
                 xrayScan (
-                    serverId: 'selfHosted',
+                    serverId: params.jfrogServerId,
                     failBuild: params.xrayFail
                 )
             }
@@ -90,7 +90,7 @@ pipeline {
                     copy: true
                 )
                 // demonstrate how the jf cli can also be used to get build scan
-                sh 'jf bs $JOB_BASE_NAME $BUILD_NUMBER --server-id $jfrogServerId'
+                sh 'jf bs $JOB_BASE_NAME $BUILD_NUMBER --server-id $jfrogServerId --fail $xrayFail'
             }
         }    
     
