@@ -52,21 +52,21 @@ pipeline {
                     captureEnv: true
                 )
                 rtDockerPush(
-                    serverId: 'selfHosted',
+                    serverId: params.jfrogServerId,
                     image: params.artifactoryHost + '/' + params.artifactoryDockerRegistry + '/petclinic:' + env.BUILD_NUMBER,
                     targetRepo: params.artifactoryDockerRegistry,
                     // Attach custom properties to the published artifacts:
                     properties: 'project-name=petclinic;status=stable',
                 )
                 rtDockerPush(
-                    serverId: 'selfHosted',
+                    serverId: params.jfrogServerId,
                     image: params.artifactoryHost + '/' + params.artifactoryDockerRegistry + '/petclinic:corretto11-latest',
                     targetRepo: params.artifactoryDockerRegistry,
                     // Attach custom properties to the published artifacts:
                     properties: 'project-name=petclinic;status=stable',
                 )
                 rtPublishBuildInfo (
-                    serverId: 'selfHosted'
+                    serverId: params.jfrogServerId
                 )
                 xrayScan (
                     serverId: 'selfHosted',
@@ -81,7 +81,7 @@ pipeline {
             steps {
                 rtPromote (
 
-                    serverId: 'selfHosted',
+                    serverId: params.jfrogServerId,
                     // Name of target repository in Artifactory
                     targetRepo: params.artifactoryDockerStagingRegistry,
                     // Comment and Status to be displayed in the Build History tab in Artifactory
@@ -90,7 +90,7 @@ pipeline {
                     copy: true
                 )
                 // demonstrate how the jf cli can also be used to get build scan
-                sh 'jf bs $JOB_BASE_NAME $BUILD_NUMBER'
+                sh 'jf bs $JOB_BASE_NAME $BUILD_NUMBER --server-id $jfrogServerId'
             }
         }    
     
