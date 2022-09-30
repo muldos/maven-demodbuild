@@ -80,7 +80,7 @@ pipeline {
             }
             steps {
                 rtBuildInfo(
-                    buildName: env.JOB_BASE_NAME + '-staging'
+                    buildName: env.JOB_BASE_NAME + '-staging',
                     captureEnv: true
                 )
                 rtPromote (
