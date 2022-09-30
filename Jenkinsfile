@@ -79,6 +79,10 @@ pipeline {
                 ARTIFACTORY_CREDENTIALS=credentials('artifactoryManaged')
             }
             steps {
+                rtBuildInfo(
+                    buildName: env.JOB_BASE_NAME + '-staging'
+                    captureEnv: true
+                )
                 rtPromote (
 
                     serverId: params.jfrogServerId,
@@ -88,6 +92,10 @@ pipeline {
                     comment: 'promoted following a successfull Xray scan',
                     status: 'Staging',
                     copy: true
+                )
+                rtPublishBuildInfo (
+                    buildName: env.JOB_BASE_NAME + '-staging'
+                    serverId: params.jfrogServerId
                 )
                 // demonstrate how the jf cli can also be used to get build scan
                 sh 'jf bs --server-id=$jfrogServerId --fail=$xrayFail $JOB_BASE_NAME $BUILD_NUMBER'
