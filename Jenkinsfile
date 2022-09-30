@@ -90,7 +90,7 @@ pipeline {
                     copy: true
                 )
                 // demonstrate how the jf cli can also be used to get build scan
-                sh 'jf bs $JOB_BASE_NAME $BUILD_NUMBER --server-id $jfrogServerId --fail $xrayFail'
+                sh 'jf bs --server-id $jfrogServerId --fail $xrayFail $JOB_BASE_NAME $BUILD_NUMBER'
             }
         }    
     
