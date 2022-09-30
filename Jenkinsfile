@@ -89,6 +89,8 @@ pipeline {
                     status: 'Staging',
                     copy: true
                 )
+                // demonstrate how the jf cli can also be used to get build scan
+                sh 'jf bs $JOB_BASE_NAME $BUILD_NUMBER'
             }
         }    
     
