@@ -30,7 +30,7 @@ pipeline {
                     git branch: 'main', url: 'https://github.com/spring-projects/spring-petclinic.git'
                     sh 'mvn -s ../ci-settings.xml -B -Dcheckstyle.skip clean package'
                     sh 'mvn -s ../ci-settings.xml -B -Dcheckstyle.skip deploy'
-                    sh 'jf c add --user $ARTIFACTORY_CREDENTIALS_USR --password $ARTIFACTORY_CREDENTIALS_PSW --url $artifactoryHostScheme://$artifactoryHost --insecure-tls true--interactive false'
+                    sh 'jf c add --user $ARTIFACTORY_CREDENTIALS_USR --password $ARTIFACTORY_CREDENTIALS_PSW --url $artifactoryHostScheme://$artifactoryHost --insecure-tls=true --interactive=false'
                     sh 'jf audit --mvn'
                 }
                 sh 'mv petclinic_src/target/spring-petclinic-*.jar ./petclinic-$BUILD_NUMBER.jar'
@@ -90,6 +90,7 @@ pipeline {
                     copy: true
                 )
                 // demonstrate how the jf cli can also be used to get build scan
+                sh 'jf c add --user $ARTIFACTORY_CREDENTIALS_USR --password $ARTIFACTORY_CREDENTIALS_PSW --url $artifactoryHostScheme://$artifactoryHost --insecure-tls=true --interactive=false'
                 sh 'jf bs --server-id=$jfrogServerId --fail=$xrayFail $JOB_BASE_NAME $BUILD_NUMBER'
             }
         }    
